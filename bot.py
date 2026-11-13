@@ -6,13 +6,13 @@ import google.generativeai as genai
 
 # --- CONFIGURATION ---
 TOKEN = "9193915897:AAFqkEtKdF-1ouNVl5YJ6closNw8h_RCwUA"
-ADMIN_USER_ID = 1951133060  # آیدی عددی شما
-FREE_TRIAL_LIMIT = 30  # تعداد پیام رایگان (۳۰ عدد)
+ADMIN_USER_ID = 1951133060
+FREE_TRIAL_LIMIT = 30
 
 # تنظیم کلید API گوگل جمنای
 GEMINI_API_KEY = os.environ.get("OPENAI_API_KEY")
 genai.configure(api_key=GEMINI_API_KEY)
-model = genai.GenerativeModel('gemini-1.5-flash')
+model = genai.GenerativeModel("gemini-1.5-flash")
 
 # --- DATABASE SETUP ---
 def init_db():
