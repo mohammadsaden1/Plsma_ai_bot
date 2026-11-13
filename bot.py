@@ -1,4 +1,4 @@
-os
+
 import sqlite3
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler, ContextTypes, filters
@@ -151,5 +151,4 @@ def main():
     print("Bot is running...")
     application.run_polling()
 
-if __name__ == "__main__":
-    
+if 
