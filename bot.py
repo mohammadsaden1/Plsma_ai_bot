@@ -1,4 +1,3 @@
-import os
 import sqlite3
 import urllib.request
 import json
@@ -56,7 +55,6 @@ def set_subscription(user_id, status=1):
 # تابع هوش مصنوعی واقعی بدون نیاز به کلید
 def ask_ai(prompt):
     try:
-        # استفاده از سرویس عمومی پاسخگویی هوشمند
         url = f"https://kaiz-apis.gleeze.com/api/gpt4o?q={urllib.parse.quote(prompt)}"
         req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
         with urllib.request.urlopen(req, timeout=20) as response:
@@ -70,8 +68,7 @@ def ask_ai(prompt):
             else:
                 return str(res_data)
     except Exception as e:
-        # پاسخ پشتیبان در صورت خطای موقت شبکه
-        return f"پاسخ هوش مصنوعی: درباره «{prompt}» باید بگویم که به عنوان دستیار شما آماده کمک هستم. (لطفاً سوال خود را مجدداً بپرسید)"
+        return f"پاسخ هوش مصنوعی: درباره «{prompt}» آماده پاسخگویی هستم. (لطفاً مجدداً بپرسید)"
 
 # --- HANDLERS ---
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -100,7 +97,6 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
     await update.message.reply_text("⏳ در حال تفکر و پردازش پاسخ...")
 
-    # دریافت پاسخ واقعی از هوش مصنوعی
     answer = ask_ai(text)
 
     if not is_subscribed:
@@ -156,7 +152,6 @@ def main():
     application = Application.builder().token(TOKEN).build()
 
     application.add_handler(CommandHandler("start", start))
-    application.add_handler(CallbackQueryHeader if hasattr(Application, 'builder') else CallbackQueryHandler(button_handler, pattern="^buy_sub$"))
     application.add_handler(CallbackQueryHandler(button_handler, pattern="^buy_sub$"))
     application.add_handler(CallbackQueryHandler(admin_approve, pattern="^approve_"))
     application.add_handler(MessageHandler(filters.PHOTO | filters.Document.ALL, receive_receipt))
