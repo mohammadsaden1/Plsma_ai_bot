@@ -7,8 +7,8 @@ import openai
 # --- CONFIGURATION ---
 TOKEN = "9193915897:AAFqkEtKdF-1ouNVl5YJ6closNw8h_RCwUA"
 ADMIN_USER_ID = 1951133060  # آیدی عددی شما
-OPENAI_API_KEY = "your-openai-api-key-here"  # کلید هوش مصنوعی
-FREE_TRIAL_LIMIT = 5  # تعداد پیام رایگان
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")  # خواندن کلید از متغیرهای محیطی هاست
+FREE_TRIAL_LIMIT = 30  # تعداد پیام رایگان (بر اساس درخواست شما روی ۳۰ تنظیم شد)
 
 openai.api_key = OPENAI_API_KEY
 
@@ -89,7 +89,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         answer = response.choices[0].message.content
     except Exception as e:
-        answer = f"پاسخ آزمایشی هوش مصنوعی به پیام شما: {text}\n(لطفاً کلید OpenAI API را در تنظیمات هاست وارد کنید)"
+        answer = f"خطا در ارتباط با هوش مصنوعی: {str(e)}\n(لطفاً از صحت کلید OpenAI API در تنظیمات Render مطمئن شوید)"
 
     if not is_subscribed:
         increment_message_count(user_id)
