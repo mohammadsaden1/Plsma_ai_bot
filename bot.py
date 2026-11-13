@@ -2,15 +2,17 @@ import os
 import sqlite3
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler, ContextTypes, filters
-import openai
+import google.generativeai as genai
 
 # --- CONFIGURATION ---
 TOKEN = "9193915897:AAFqkEtKdF-1ouNVl5YJ6closNw8h_RCwUA"
 ADMIN_USER_ID = 1951133060  # آیدی عددی شما
 FREE_TRIAL_LIMIT = 30  # تعداد پیام رایگان (۳۰ عدد)
 
-# خواندن کلید از متغیرهای محیطی هاست
-openai.api_key = os.environ.get("OPENAI_API_KEY")
+# تنظیم کلید API گوگل جمنای از متغیرهای محیطی هاست
+GEMINI_API_KEY = os.environ.get("OPENAI_API_KEY")  # از همان متغیر OPENAI_API_KEY در رندر استفاده می‌کنیم تا نیازی به تغییر نام در پنل رندر نباشد
+genai.configure(api_key=GEMINI_API_KEY)
+model = genai.GenerativeModel("gemini-1.5-flash")
 
 # --- DATABASE SETUP ---
 def init_db():
@@ -83,13 +85,10 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("⏳ در حال پردازش پاسخ هوش مصنوعی...")
 
     try:
-        response = openai.ChatCompletion.create(
-            model="gpt-4o-mini",
-            messages=[{"role": "user", "content": text}]
-        )
-        answer = response.choices[0].message.content
+        response = model.generate_content(text)
+        answer = response.text
     except Exception as e:
-        answer = f"خطا در ارتباط با هوش مصنوعی: {str(e)}\n(لطفاً از صحت کلید OpenAI API در تنظیمات Render مطمئن شوید)"
+        answer = f"خطا در ارتباط با هوش مصنوعی: {str(e)}\n(لطفاً از صحت کلید API در تنظیمات Render مطمئن شوید)"
 
     if not is_subscribed:
         increment_message_count(user_id)
