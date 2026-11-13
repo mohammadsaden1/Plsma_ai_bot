@@ -1,3 +1,4 @@
+import os
 import sqlite3
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler, ContextTypes, filters
@@ -6,10 +7,10 @@ import openai
 # --- CONFIGURATION ---
 TOKEN = "9193915897:AAFqkEtKdF-1ouNVl5YJ6closNw8h_RCwUA"
 ADMIN_USER_ID = 1951133060  # آیدی عددی شما
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")  # خواندن کلید از متغیرهای محیطی هاست
-FREE_TRIAL_LIMIT = 30  # تعداد پیام رایگان (بر اساس درخواست شما روی ۳۰ تنظیم شد)
+FREE_TRIAL_LIMIT = 30  # تعداد پیام رایگان
 
-openai.api_key = OPENAI_API_KEY
+# خواندن کلید از متغیرهای محیطی هاست
+openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 # --- DATABASE SETUP ---
 def init_db():
@@ -152,4 +153,4 @@ def main():
     application.run_polling()
 
 if __name__ == "__main__":
-    main
+    main()
