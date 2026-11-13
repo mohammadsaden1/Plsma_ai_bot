@@ -12,7 +12,7 @@ FREE_TRIAL_LIMIT = 30  # تعداد پیام رایگان (۳۰ عدد)
 # تنظیم کلید API گوگل جمنای
 GEMINI_API_KEY = os.environ.get("OPENAI_API_KEY")
 genai.configure(api_key=GEMINI_API_KEY)
-model = genai.GenerativeModel("gemini-1.5-flash")
+model = genai.GenerativeModel('gemini-1.5-flash')
 
 # --- DATABASE SETUP ---
 def init_db():
