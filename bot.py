@@ -9,10 +9,10 @@ TOKEN = "9193915897:AAFqkEtKdF-1ouNVl5YJ6closNw8h_RCwUA"
 ADMIN_USER_ID = 1951133060  # آیدی عددی شما
 FREE_TRIAL_LIMIT = 30  # تعداد پیام رایگان (۳۰ عدد)
 
-# تنظیم کلید API گوگل جمنای از متغیرهای محیطی هاست
-GEMINI_API_KEY = os.environ.get("OPENAI_API_KEY")  # از همان متغیر OPENAI_API_KEY در رندر استفاده می‌کنیم تا نیازی به تغییر نام در پنل رندر نباشد
+# تنظیم کلید API گوگل جمنای
+GEMINI_API_KEY = os.environ.get("OPENAI_API_KEY")
 genai.configure(api_key=GEMINI_API_KEY)
-model = genai.GenerativeModel("gemini-1.5-flash")
+model = genai.GenerativeModel("gemini-pro")
 
 # --- DATABASE SETUP ---
 def init_db():
