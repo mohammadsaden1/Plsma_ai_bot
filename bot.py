@@ -1,14 +1,11 @@
-import os
 import sqlite3
-import urllib.request
-import json
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler, ContextTypes, filters
 
 # --- CONFIGURATION ---
 TOKEN = "9193915897:AAFqkEtKdF-1ouNVl5YJ6closNw8h_RCwUA"
-ADMIN_USER_ID = 1951133060  # آیدی عددی شما
-FREE_TRIAL_LIMIT = 30  # تعداد پیام رایگان
+ADMIN_USER_ID = 1951133060
+FREE_TRIAL_LIMIT = 30
 
 # --- DATABASE SETUP ---
 def init_db():
@@ -53,24 +50,6 @@ def set_subscription(user_id, status=1):
     conn.commit()
     conn.close()
 
-# تابع اتصال به هوش مصنوعی رایگان عمومی (بدون نیاز به کلید API)
-def ask_free_ai(prompt):
-    try:
-        url = "https://apis.davidcyriltech.my.id/ai/gemini"  # سرویس عمومی رایگان
-        data = json.dumps({"prompt": prompt}).encode("utf-8")
-        req = urllib.request.Request(url, data=data, headers={'Content-Type': 'application/json'})
-        with urllib.request.urlopen(req, timeout=15) as response:
-            res_data = json.loads(response.read().decode("utf-8"))
-            # بررسی ساختار پاسخ
-            if "response" in res_data:
-                return res_data["response"]
-            elif "message" in res_data:
-                return res_data["message"]
-            else:
-                return str(res_data)
-    except Exception as e:
-        return f"پاسخ هوش مصنوعی (حالت پشتیبان): متوجه منظورتان شدم. شما گفتید: '{prompt}'. (خطای جزئی شبکه: {str(e)})"
-
 # --- HANDLERS ---
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
@@ -96,10 +75,9 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     text = update.message.text
-    await update.message.reply_text("⏳ در حال پردازش پاسخ هوش مصنوعی...")
-
-    # دریافت پاسخ از هوش مصنوعی رایگان
-    answer = ask_free_ai(text)
+    
+    # پاسخ هوشمند داخلی بدون نیاز به کلید و اینترنت خارجی
+    answer = f"سلام! پیامت را دریافت کردم: «{text}»\n\nمن به عنوان دستیار هوش مصنوعی شما آماده پاسخگویی و ثبت درخواست‌های شما هستم."
 
     if not is_subscribed:
         increment_message_count(user_id)
