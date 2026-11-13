@@ -7,7 +7,7 @@ import openai
 # --- CONFIGURATION ---
 TOKEN = "9193915897:AAFqkEtKdF-1ouNVl5YJ6closNw8h_RCwUA"
 ADMIN_USER_ID = 1951133060  # آیدی عددی شما
-FREE_TRIAL_LIMIT = 30  # تعداد پیام رایگان
+FREE_TRIAL_LIMIT = 30  # تعداد پیام رایگان (۳۰ عدد)
 
 # خواندن کلید از متغیرهای محیطی هاست
 openai.api_key = os.environ.get("OPENAI_API_KEY")
@@ -84,7 +84,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o-mini",
             messages=[{"role": "user", "content": text}]
         )
         answer = response.choices[0].message.content
